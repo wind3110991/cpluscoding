@@ -141,6 +141,35 @@ void deleteDuplyNode(Node *head)
 
 }
 
+/*reverse the hole link*/
+Node *reverseLink(Node *head)
+{
+    if (head == NULL || head->next == NULL)
+        return NULL;
+
+    if (head->next->next == NULL)
+        return head;
+
+    Node *prePtr = head->next;
+    Node *curPtr = head->next->next;
+    Node *nextPtr = curPtr->next;
+
+    while(curPtr->next){
+        curPtr->next = prePtr;
+		if (head->next == prePtr)
+            prePtr->next=NULL;
+        
+		prePtr = curPtr;
+        curPtr = nextPtr;
+        nextPtr = nextPtr->next;
+    }
+    
+    curPtr->next = prePtr;
+    head->next = curPtr;
+	
+    return head;
+}
+
 int main()
 {
 	Node *head = createLink();
@@ -157,4 +186,9 @@ int main()
 
 	deleteNode(head, 1);
 	printLink(head);
+
+	reverseLink(head);
+	printLink(head);
+
+	return 0;
 }
