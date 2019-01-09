@@ -61,9 +61,9 @@ Node* createLink2()
 	Node *head = NULL;
 	Node *p;
 
-	int a[] = {0,  2,  6, 8};
+	int a[] = {0,2,  4,  6, 8};
 
-	for (int i=0 ; i<4 ; i++)
+	for (int i=0 ; i<5 ; i++)
 	{	
 		Node *node = new Node(a[i]);
 		
@@ -83,6 +83,129 @@ Node* createLink2()
 	return head;
 }
 
+/*insert a node at the index of Link List*/
+void insertNode(Node *head, int value, int index)
+{
+	Node * node = new Node(value);
+	
+	if (head == NULL)
+		head = node;
+	else{
+		Node *p = head;
+		
+		for (int i = 0; i <= index; i++)
+		{
+			if (p == NULL){
+				break;
+			}
+				
+			if (index == i){
+				node->next = p->next;
+				p->next = node;
+				break;
+			}
+
+			p = p->next; 
+		}
+	}
+}
+
+/*delet a node by value*/
+Node* deleteNode(Node *head, int value)
+{
+	if (head == NULL)
+		return NULL;
+
+	Node *p = head;
+	while (p->next != NULL)
+	{
+		// 如果为头
+		if (head->value == value)
+		{
+			Node * tmp = head;
+			head= head->next;
+
+			delete tmp;
+			tmp = NULL;
+		}
+		else{
+			if (p->next->value == value){
+				Node *tmp = p->next;
+				p->next = p->next->next;
+
+				delete tmp;
+				tmp = NULL;
+			}
+
+			if (p->next != NULL)
+				p = p->next;	
+		}
+	}
+
+	cout<<"head address:"<<head<<endl;
+	cout<<"head value:"<<head->value<<endl;
+
+	return head;
+}
+
+/*delet duply node by value*/
+Node* deleteDuplyNode(Node *head)
+{
+	map<int, int> m;
+	if (head == NULL)
+		return NULL;
+
+	Node *p = head;
+	while (p->next != NULL)
+	{
+		if (m.find(p->next->value) != m.end()){
+			Node *tmp = p->next;
+			p->next = p->next->next;
+
+			delete tmp;
+			tmp = NULL;
+		}else{
+			m[p->next->value] = 1;
+		}
+
+		if (p->next != NULL)
+			p = p->next;	
+	}
+
+	cout<<"head address:"<<head<<endl;
+	cout<<"head value:"<<head->value<<endl;
+
+	return head;
+}
+
+Node *reverseLink(Node *head)
+{
+	if (head == NULL || head->next == NULL)
+		return NULL;
+
+	Node *prePtr;
+	Node *curPtr;
+	Node *nextPtr;
+
+	if (head->next->next == NULL)
+		return head;
+
+	prePtr = head->next;
+	curPtr = head->next->next;
+	//nextPtr = curPtr->next;
+
+	while(curPtr->next){
+		curPtr->next = prePtr;
+		curPtr = nextPtr;
+		prePtr = curPtr;
+		nextPtr = nextPtr->next;		
+	}
+
+	head->next = curPtr;
+
+	return head;
+}
+
 Node *mergeSortedTwoLinks(Node *head1, Node *head2) {
 	if (head1 == NULL && head2 == NULL)
 		return NULL;
@@ -91,14 +214,18 @@ Node *mergeSortedTwoLinks(Node *head1, Node *head2) {
 	else if (head2 == NULL && head1 != NULL)
 		return head1;
 
-	Node * newHead=NULL;
-	Node * p1 = head1->next;
-	Node * p2 = head2->next;
+	Node * newHead;
+	Node * p1 = head1;
+	Node * p2 = head2;
 
-	if (head1->next->value > head2->next->value)
+	if (head1->next->value > head2->next->value){
 		newHead = head2;
-	else
+		p2 = p2->next;
+	}
+	else{
 		newHead = head1;
+		p1 = p1->next;
+	}
 
 	Node * p3 = newHead;
 
