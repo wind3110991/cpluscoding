@@ -15,8 +15,7 @@ void myQuickSort(int a[], int start, int end){
 				rightIndex--;
 			}
 			else{
-				a[leftIndex] = a[rightIndex];
-				leftIndex++;
+				a[leftIndex++] = a[rightIndex];
 				break;
 			}
 		}
@@ -26,8 +25,7 @@ void myQuickSort(int a[], int start, int end){
 				leftIndex++;
 			}
 			else{
-				a[rightIndex] = a[leftIndex];
-				rightIndex--;
+				a[rightIndex--] = a[leftIndex];
 				break;
 			}
 
@@ -35,7 +33,6 @@ void myQuickSort(int a[], int start, int end){
 	}
 
 	a[leftIndex] = pivot;
-
 	myQuickSort(a, start, leftIndex-1);
 	myQuickSort(a, rightIndex+1, end);
 }
