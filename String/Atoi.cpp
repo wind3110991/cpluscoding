@@ -29,4 +29,6 @@ int main()
 {
 	char *a = "12314";
 	cout<<atoi(a);
+	
+	return 0;
 }
