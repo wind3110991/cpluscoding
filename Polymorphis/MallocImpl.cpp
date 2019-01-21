@@ -18,7 +18,8 @@ t_block find_block(t_block *last, size_t size)
         *last = b;
         b = b->next;
     }
-return b;
+    
+    return b;
 }
 
 t_block extend_heap(t_block last, size_t size)
@@ -32,6 +33,7 @@ t_block extend_heap(t_block last, size_t size)
     if(last)//这个last是指向extend之前最后一个block
         last->next = b;//新开辟的block挂载在链表中
     b->free = 0;
+    
     return b;
 }
 
@@ -39,14 +41,14 @@ t_block extend_heap(t_block last, size_t size)
 //分裂后b成了分配后的block
 void split_block(t_block b, size_t size)
 {
-    t_block new;//新的空闲block = 要分裂的block - 申请分配出去的内存
-    new = b->data + size;//将new定位到剩下的数据块区域
+    t_block newblock;//新的空闲block = 要分裂的block - 申请分配出去的内存
+    newblock = b->data + size;//将new定位到剩下的数据块区域
     //分裂的原block-分配出去的内存大小-block结构体本身大小
-    new->size = b->size - size - BLOCK_SIZE;
-    new->next = b->next;//链表插入
-    new->free = 1;//空闲标记可用
+    newblock->size = b->size - size - BLOCK_SIZE;
+    newblock->next = b->next;//链表插入
+    newblock->free = 1;//空闲标记可用
     b->size = size;
-    b->next = new;//链表插入
+    b->next = newblock;//链表插入
 }
 
 void *base = NULL;
@@ -85,5 +87,6 @@ void *malloc(size_t size)
             return NULL;
         base = b;
     }
+    
     return b->data;
 }
